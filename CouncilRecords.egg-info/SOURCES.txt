@@ -1,0 +1,7 @@
+CouncilRecords.egg-info/PKG-INFO
+CouncilRecords.egg-info/SOURCES.txt
+CouncilRecords.egg-info/dependency_links.txt
+CouncilRecords.egg-info/top_level.txt
+source/__init__.py
+source/crawler.py
+source/ordinance.py

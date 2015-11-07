@@ -7,6 +7,3 @@ Description: Tests the ordinance.py file
 
 import sys
 from source.ordinance import OrdinanceDocument
-
-def test_OrdinanceDocument():
-    pass
