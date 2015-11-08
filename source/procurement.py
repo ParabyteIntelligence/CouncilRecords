@@ -25,6 +25,17 @@ class ProcurementDocument():
         # create beautifulsoup4 object
         self.soup = bs4.BeautifulSoup(html_doc, 'lxml')
 
+        self.data_dict.update(
+            {
+                "amount" : self._find_amount(),
+                "authorization_date" : self._find_authorization_date(),
+                "document_date" : self._find_document_date(),
+                "document" : self._find_document()
+            }
+        )
+
+        return self.data_dict
+
     def _find_document_date(self):
         """Returns the document's creation date as a python date object"""
 
@@ -77,4 +88,7 @@ class ProcurementDocument():
         return sorted_amounts[-1]
 
     def _find_document(self):
-        pass
+        """Finds the body of the document"""
+
+        bod = self.soup.find('body').text.strip()
+        return bod
