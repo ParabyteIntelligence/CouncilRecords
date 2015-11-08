@@ -8,6 +8,8 @@ class ProcurementDocument():
 
         # dict template
         self.data_dict = {
+            "item_id" : int(),
+            "meeting_id" : int(),
             "title" : str(),
             "amount" : float(), # use regex to find any number starting with a $ and grab the biggest number since it's total
             "authorization_date" : datetime.date(2000, 1, 1),
@@ -15,12 +17,12 @@ class ProcurementDocument():
             "document" : str() # entire body tag
         }
 
-    def to_dict(self, title, html_doc):
+    def to_dict(self, title, item_id, meeting_id, html_doc):
         """ This is the main method which is called to return the Python dictionary based on
         the procurement page's title html doc"""
 
-        # store the passed in title
-        self.data_dict['title'] = title
+        # store the passed in values
+        self.data_dict.update({'title' : title, 'item_id' : item_id, 'meeting_id' : meeting_id})
 
         # create beautifulsoup4 object
         self.soup = bs4.BeautifulSoup(html_doc, 'lxml')

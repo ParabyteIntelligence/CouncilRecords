@@ -20,16 +20,20 @@ html_doc = requests.get(url).text
 inst = ProcurementDocument()
 
 def test_to_dict():
-    # title
+    # store variables which would otherwise be provided to the class
     title = "S25442 Recreational, Educational and Miscellaneous Supplies"
-    # body text
+    item_id = 5610
+    meeting_id = 126
+    # body tex
     bod = bs4.BeautifulSoup(html_doc, 'lxml').find('body').text.strip()
 
     # capture data as a python dict from the html document
-    data = inst.to_dict(title, html_doc)
+    data = inst.to_dict(title, item_id, meeting_id, html_doc)
 
     # the dict we will test against
     test_dict = {
+            "item_id" : 5610,
+            "meeting_id" : 126,
             "title" : title,
             "amount" : 753750.00,
             "authorization_date" : datetime.date(2015, 11, 10),
