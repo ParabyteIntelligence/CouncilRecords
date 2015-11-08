@@ -1,8 +1,8 @@
 import datetime, pdb, re
-import bs4
+import bs4, requests
 
 class ProcurementDocument():
-    """Pass in an HTML doc for a City Council procurement. Returns a Python dictionary with procurement information."""
+    """Pass in a url, title, meeting_id, and item_id for a City Council procurement. Returns a Python dictionary with procurement information."""
 
     def __init__(self):
 
@@ -14,18 +14,20 @@ class ProcurementDocument():
             "amount" : float(), # use regex to find any number starting with a $ and grab the biggest number since it's total
             "authorization_date" : datetime.date(2000, 1, 1),
             "document_date" : datetime.date(2000, 1, 1),
-            "document" : str() # entire body tag
+            "document" : str(), # entire body tag
+            "url" : str()
         }
 
-    def to_dict(self, title, item_id, meeting_id, html_doc):
+    def to_dict(self, title, item_id, meeting_id, url):
         """ This is the main method which is called to return the Python dictionary based on
-        the procurement page's title html doc"""
+        the procurement page's title, item_id, meeting_id, and url"""
 
         # store the passed in values
-        self.data_dict.update({'title' : title, 'item_id' : item_id, 'meeting_id' : meeting_id})
+        self.data_dict.update({'title' : title, 'item_id' : item_id, 'meeting_id' : meeting_id, 'url' : url})
 
-        # create beautifulsoup4 object
-        self.soup = bs4.BeautifulSoup(html_doc, 'lxml')
+        # create beautifulsoup4 object from url
+        self.html_doc = requests.get(url).text
+        self.soup = bs4.BeautifulSoup(self.html_doc, 'lxml')
 
         self.data_dict.update(
             {

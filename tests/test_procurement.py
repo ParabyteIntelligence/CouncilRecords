@@ -11,7 +11,7 @@ from source.procurement import ProcurementDocument
 
 ### ProcurementDocument class ###
 
-# fixed url to test
+# predefined url to test
 url = 'http://houston.novusagenda.com/agendapublic/Coversheet.aspx?ItemID=5610&MeetingID=126'
 # generate a requests object and store the html doc
 html_doc = requests.get(url).text
@@ -24,11 +24,11 @@ def test_to_dict():
     title = "S25442 Recreational, Educational and Miscellaneous Supplies"
     item_id = 5610
     meeting_id = 126
-    # body tex
+    # body text
     bod = bs4.BeautifulSoup(html_doc, 'lxml').find('body').text.strip()
 
     # capture data as a python dict from the html document
-    data = inst.to_dict(title, item_id, meeting_id, html_doc)
+    data = inst.to_dict(title, item_id, meeting_id, url)
 
     # the dict we will test against
     test_dict = {
