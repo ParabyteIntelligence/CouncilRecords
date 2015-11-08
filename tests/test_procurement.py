@@ -45,3 +45,6 @@ def test_find_document_date():
 
 def test_find_authorization_date():
     assert inst._find_authorization_date() == datetime.date(2015, 11, 10)
+
+def test_find_amount():
+    assert inst._find_amount() == 753750.00

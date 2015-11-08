@@ -64,7 +64,17 @@ class ProcurementDocument():
         return datetime.date(year, month, day) # return date object
 
     def _find_amount(self):
-        pass
+        """Finds the greatest dollar amount in the entire document"""
+
+        pattern = re.compile('(\$(\d*\,){0,}\d{1,3}\.\d{2})')
+        items = re.findall(pattern, self.soup.text)
+        amounts = []
+        for tup in items:
+            a1 = tup[0].replace('$', '')
+            a1 = a1.replace(',', '')
+            amounts.append(float(a1))
+        sorted_amounts = sorted(amounts)
+        return sorted_amounts[-1]
 
     def _find_document(self):
         pass
