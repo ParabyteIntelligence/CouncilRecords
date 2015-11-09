@@ -1,5 +1,9 @@
-import datetime, pdb, re
-import bs4, requests
+import datetime
+import pdb
+import re
+import bs4
+import requests
+
 
 class ProcurementDocument():
     """Pass in a url, title, meeting_id, and item_id for a City Council procurement. Returns a Python dictionary with procurement information."""
@@ -8,75 +12,47 @@ class ProcurementDocument():
 
         # dict template
         self.data_dict = {
-            "item_id" : int(),
-            "meeting_id" : int(),
-            "title" : str(),
-            "amount" : float(), # use regex to find any number starting with a $ and grab the biggest number since it's total
-            "authorization_date" : datetime.date(2000, 1, 1),
-            "document_date" : datetime.date(2000, 1, 1),
-            "document" : str(), # entire body tag
-            "url" : str()
+            "item_id": int(),
+            "meeting_id": int(),
+            "title": str(),
+            # use regex to find any number starting with a $ and grab the
+            # biggest number since it's total
+            "amount": float(),
+            "authorization_date": datetime.datetime(2000, 1, 1),
+            "document_date": datetime.datetime(2000, 1, 1),
+            "document": str(),  # entire body tag
+            "url": str()
         }
 
-    def to_dict(self, title, item_id, meeting_id, url):
+    def parse(self, doc):
         """ This is the main method which is called to return the Python dictionary based on
         the procurement page's title, item_id, meeting_id, and url"""
 
-        # store the passed in values
-        self.data_dict.update({'title' : title, 'item_id' : item_id, 'meeting_id' : meeting_id, 'url' : url})
+        url = "http://houston.novusagenda.com/agendapublic/Coversheet.aspx?ItemID={0}&MeetingID={1}".format(
+            doc['item_id'], doc['meeting_id'])
 
         # create beautifulsoup4 object from url
         self.html_doc = requests.get(url).text
         self.soup = bs4.BeautifulSoup(self.html_doc, 'lxml')
 
-        self.data_dict.update(
-            {
-                "amount" : self._find_amount(),
-                "authorization_date" : self._find_authorization_date(),
-                "document_date" : self._find_document_date(),
-                "document" : self._find_document()
-            }
-        )
+        # store the passed in values
+        return {
+            'title': doc['title'],
+            'item_id': doc['item_id'],
+            'meeting_id': doc['meeting_id'],
+            'url': url,
+            "amount": self._find_amount(),
+            "authorization_date": self._find_authorization_date(doc['date']),
+            "document": self._find_document()
+        }
 
-        return self.data_dict
-
-    def _find_document_date(self):
+    def _find_authorization_date(self, doc_date):
         """Returns the document's creation date as a python date object"""
 
-        # the pattern we'll use to find the string which contains the date
-        pattern = re.compile('Item Creation Date: \d{1,2}\/\d{1,2}\/\d{4}')
-        # find all items in the span tag
-        items = self.soup.find_all('span')
-
-        matches = [] # will store all matched strings
-        for item in items:
-            match = re.findall(pattern, str(item))
-            if match:
-                matches.append(match)
-        # grab the actual date
-        date_ls = matches[0][0].split(' ')[-1].split('/')
+        date_ls = doc_date.split('/')
         year, month, day = int(date_ls[2]), int(date_ls[0]), int(date_ls[1])
 
-        return datetime.date(year, month, day) # return date object
-
-    def _find_authorization_date(self):
-        """Returns the document's authorization date as a python date object"""
-
-        # the pattern we'll use to find the string which contains the date
-        pattern = re.compile('Meeting Date: \d{1,2}\/\d{1,2}\/\d{4}')
-        # find all items in the span tag
-        items = self.soup.find_all('span')
-
-        matches = [] # will store all matched strings
-        for item in items:
-            match = re.findall(pattern, str(item))
-            if match:
-                matches.append(match)
-        # grab the actual date
-        date_ls = matches[0][0].split(' ')[-1].split('/')
-        year, month, day = int(date_ls[2]), int(date_ls[0]), int(date_ls[1])
-
-        return datetime.date(year, month, day) # return date object
+        return datetime.datetime(year, month, day)  # return date object
 
     def _find_amount(self):
         """Finds the greatest dollar amount in the entire document"""
@@ -92,7 +68,18 @@ class ProcurementDocument():
         return sorted_amounts[-1]
 
     def _find_document(self):
-        """Finds the body of the document"""
+        """Finds the visible text inside of the document"""
 
-        bod = self.soup.find('body').text.strip()
-        return bod
+        texts = self.soup.findAll(text=True)
+        visible_texts = filter(ProcurementDocument._visible_text, texts)
+
+        return " ".join(visible_texts)
+
+    @staticmethod
+    def _visible_text(element):
+        """Filter for Visible Text"""
+        if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
+            return False
+        elif re.match(r'<!--.*-->', element):
+            return False
+        return True
