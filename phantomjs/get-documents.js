@@ -92,6 +92,7 @@ function getAllItems() {
 }
 
 function getItemsOnCurrentPage() {
+  page.render('page-' + numOfPages + '.png');
   return page.evaluate(
     function() {
       var itemTable = $(window.ITEM_TABLE);

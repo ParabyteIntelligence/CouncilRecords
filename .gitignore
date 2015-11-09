@@ -1,6 +1,7 @@
 # MongoDB
 db/
-phantomjs/doc-list.json
+**doc-list.json
+**.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
