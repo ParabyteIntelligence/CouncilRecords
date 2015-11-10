@@ -1,6 +1,6 @@
 """
 Copyright (c) Parabyte Intelligence LLC 2015
-Author: Rakshak Talwar
+Authors: Rakshak Talwar and Micah Thomas
 
 Description: Tests the procurement.py file
 """

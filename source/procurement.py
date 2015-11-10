@@ -1,3 +1,10 @@
+"""
+Copyright (c) Parabyte Intelligence LLC 2015
+Author: Rakshak Talwar and Micah Thomas
+
+Description: Defines a class which parses procurement documents for relevant information
+"""
+
 import datetime
 import pdb
 import re
@@ -47,7 +54,7 @@ class ProcurementDocument():
         }
 
     def _find_authorization_date(self, doc_date):
-        """Returns the document's creation date as a python date object"""
+        """Returns the document's creation date as a python datetime object"""
 
         date_ls = doc_date.split('/')
         year, month, day = int(date_ls[2]), int(date_ls[0]), int(date_ls[1])
