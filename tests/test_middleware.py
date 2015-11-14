@@ -22,7 +22,7 @@ def test_generate_filters():
 
     # the filters we're going to test against, the output from the function we're testing should look like this
     test_filters = [
-        {"range" : {"date" : {"from" : start_date, "to" : end_date} } },
+        {"range" : {"authorization_date" : {"from" : start_date, "to" : end_date} } },
         {"range" : {"amount" : {"from" : min_amount, "to" : max_amount} } }
     ]
 

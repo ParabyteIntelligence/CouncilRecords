@@ -25,11 +25,11 @@ def generate_filters(start_date, end_date, min_amount, max_amount):
 
     # create date range dict
     if start_date and end_date: # if both start and end date exist
-        date_range_dict = {"range" : {"date" : {"from" : start_date, "to" : end_date} } }
+        date_range_dict = {"range" : {"authorization_date" : {"from" : start_date, "to" : end_date} } }
     elif (not start_date) and end_date: # if only end date exists
-        date_range_dict = {"range" : {"date" : {"lte" : end_date} } }
+        date_range_dict = {"range" : {"authorization_date" : {"lte" : end_date} } }
     elif start_date and (not end_date): # if only start date exists
-        date_range_dict = {"range" : {"date" : {"gte" : start_date} } }
+        date_range_dict = {"range" : {"authorization_date" : {"gte" : start_date} } }
     else:
         date_range_dict = None
 
@@ -80,8 +80,14 @@ def council_records():
     # query Elastic Search for appropriate documents with respect to the query
     res = es.search(index=index_names, doc_type=type_names, body = dsl_query, size=num_hits)
 
+    # find all of the documents nested in res
+    response = []
+    for item in res['hits']['hits']:
+        for source in item['_source']:
+            response.append(source)
+
     # return the hits
-    return jsonify(res['hits'])
+    return response
 
 if __name__ == "__main__":
     app.run(port=9099, debug=True)
