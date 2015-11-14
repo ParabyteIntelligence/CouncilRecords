@@ -23,6 +23,48 @@ type_name = 'recs'
 # create elasticsearch client instance
 es = Elasticsearch()
 
+def generate_filters(start_date, end_date, min_amount, max_amount):
+    """ Generates a list of filters for use in the Elastic Search query """
+    # take in query information
+    if start_date == '0':
+        start_date = 0
+    if end_date == '0':
+        end_date = 0
+
+    if min_amount == '-1':
+        min_amount = 0
+    if max_amount == '-1':
+        max_amount = 0
+
+    # create date range dict
+    if start_date and end_date: # if both start and end date exist
+        date_range_dict = {"range" : {"date" : {"from" : start_date, "to" : end_date} } }
+    elif (not start_date) and end_date: # if only end date exists
+        date_range_dict = {"range" : {"date" : {"lte" : end_date} } }
+    elif start_date and (not end_date): # if only start date exists
+        date_range_dict = {"range" : {"date" : {"gte" : start_date} } }
+    else:
+        date_range_dict = False
+
+    # create amount range dict
+    if min_amount and max_amount: # if both min and max amount exist
+        amount_range_dict = {"range" : {"amount" : {"from" : min_amount, "to" : max_amount} } }
+    elif (not min_amount) and max_amount: # if only max amount exists
+        amount_range_dict = {"range" : {"amount" : {"lte" : max_amount} } }
+    elif min_amount and (not max_amount): # if only min amount exists
+        amount_range_dict = {"range" : {"amount" : {"gte" : min_amount} } }
+    else:
+        amount_range_dict = False
+
+    # a list with filters
+    filters = []
+    if date_range_dict:
+        filters.append(date_range_dict)
+    if amount_range_dict:
+        filters.append(amount_range_dict)
+
+    return filters
+
 #the main request route
 @app.route('/council_records/<start_date>/<end_date>/<min_amount>/<max_amount>/<search_query>', methods=['GET'])
 def council_records(start_date, end_date, min_amount, max_amount, search_query):
@@ -31,54 +73,10 @@ def council_records(start_date, end_date, min_amount, max_amount, search_query):
     """min_amount and max_amount are strings. Use '-1' for blank"""
     """search_query is a string"""
 
-    # take in query information
-    dates = [] # first index will store start_date if it exists; 0 otherwise. Second index will do the same for the end_date
-    if start_date != '0':
-        dates.insert(0, start_date)
-    else:
-        dates.insert(0, 0)
-    if end_date != '0':
-        dates.insert(1, end_date)
-    else:
-        dates.insert(1, 0)
-
-    amounts = [] # first index will store min_amount if it exists; 0 otherwise. Second index will do the same for the max_amount
-    if min_amount != '-1':
-        amounts.insert(0, float(min_amount))
-    else:
-        amounts.insert(0, 0)
-    if max_amount != '-1':
-        amounts.insert(1, float(max_amount))
-    else:
-        amounts.insert(1, 0)
-
-    # create date range dict
-    if dates[0] and dates[1]: # if both start and end date exist
-        date_range_dict = {"range" : {"date" : {"from" : dates[0], "to" : dates[1]} }}
-    elif (not dates[0]) and dates[1]: # if only end date exists
-        date_range_dict = {"range" : {"date" : {"lte" : dates[1] } } }
-    elif dates[0] and (not dates[1]): # if only start date exists
-        date_range_dict = {"range" : {"date" : {"gte" : dates[0] } } }
-    else:
-        date_range_dict = False
-
-    # create amount range dict
-    if dates[0] and dates[1]: # if both min and max amount exist
-        amount_range_dict = {"range" : {"amount" : {"from" : amounts[0], "to" : amounts[1]} }}
-    elif (not dates[0]) and dates[1]: # if only max amount exists
-        amount_range_dict = {"range" : {"amount" : {"lte" : amounts[1] } } }
-    elif dates[0] and (not dates[1]): # if only min amount exists
-        amount_range_dict = {"range" : {"amount" : {"gte" : amounts[0] } } }
-    else:
-        amount_range_dict = False
-
     # generate the body, written in Elastic Search's DSL
     dsl_query = {
         "query" : {
-            "filter" : [
-                date_range_dict,
-                amount_range_dict
-            ]
+            "filter" : generate_filters(start_date, end_date, min_amount, max_amount)
         }
     }
 
