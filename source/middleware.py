@@ -13,9 +13,6 @@ import datetime, json, os
 # create the application object
 app = Flask(__name__)
 
-# config
-app.secret_key = 'kjrbglwjegbkgnerlkbluibgugle'
-
 # some global variables
 index_name = 'councilrec'
 type_name = 'recs'
@@ -25,16 +22,6 @@ es = Elasticsearch()
 
 def generate_filters(start_date, end_date, min_amount, max_amount):
     """ Generates a list of filters for use in the Elastic Search query """
-    # take in query information
-    if start_date == '0':
-        start_date = 0
-    if end_date == '0':
-        end_date = 0
-
-    if min_amount == '-1':
-        min_amount = 0
-    if max_amount == '-1':
-        max_amount = 0
 
     # create date range dict
     if start_date and end_date: # if both start and end date exist
@@ -44,7 +31,7 @@ def generate_filters(start_date, end_date, min_amount, max_amount):
     elif start_date and (not end_date): # if only start date exists
         date_range_dict = {"range" : {"date" : {"gte" : start_date} } }
     else:
-        date_range_dict = False
+        date_range_dict = None
 
     # create amount range dict
     if min_amount and max_amount: # if both min and max amount exist
@@ -54,7 +41,7 @@ def generate_filters(start_date, end_date, min_amount, max_amount):
     elif min_amount and (not max_amount): # if only min amount exists
         amount_range_dict = {"range" : {"amount" : {"gte" : min_amount} } }
     else:
-        amount_range_dict = False
+        amount_range_dict = None
 
     # a list with filters
     filters = []
@@ -66,12 +53,18 @@ def generate_filters(start_date, end_date, min_amount, max_amount):
     return filters
 
 #the main request route
-@app.route('/council_records/<start_date>/<end_date>/<min_amount>/<max_amount>/<search_query>', methods=['GET'])
-def council_records(start_date, end_date, min_amount, max_amount, search_query):
+@app.route('/search', methods=['GET'])
+def council_records():
     """Returns a respective JSON object when issued a query"""
-    """start_date and end_date are strings in format YYYY-MM-DD. Use '0' for blank"""
-    """min_amount and max_amount are strings. Use '-1' for blank"""
+    """start_date and end_date are dates"""
+    """min_amount and max_amount are floats"""
     """search_query is a string"""
+
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    min_amount = request.args.get('min_amount')
+    max_amount = request.args.get('max_amount')
+    search_query = request.args.get('search_query')
 
     # generate the body, written in Elastic Search's DSL
     dsl_query = {
@@ -82,3 +75,15 @@ def council_records(start_date, end_date, min_amount, max_amount, search_query):
 
     # query Elastic Search for appropriate documents with respect to the query
     res = es.search(index=index_name, body = dsl_query)
+
+
+
+if __name__ == "__main__":
+    app.run(port=9099, debug=True)
+
+
+
+
+
+
+
