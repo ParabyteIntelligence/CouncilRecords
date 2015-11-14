@@ -65,7 +65,7 @@ def council_records():
     min_amount = request.args.get('min_amount')
     max_amount = request.args.get('max_amount')
     search_query = request.args.get('search_query')
-    num_hits = request.args.get('num_hits') if request.args.get('num_hits') else 10 
+    num_hits = request.args.get('num_hits') if request.args.get('num_hits') else 10
 
     # generate the body, written in Elastic Search's DSL
     dsl_query = {
@@ -81,14 +81,7 @@ def council_records():
     res = es.search(index=index_names, doc_type=type_names, body = dsl_query, size=num_hits)
 
     # return the hits
-    jsonify(res['hits'])
+    return jsonify(res['hits'])
 
 if __name__ == "__main__":
     app.run(port=9099, debug=True)
-
-
-
-
-
-
-
