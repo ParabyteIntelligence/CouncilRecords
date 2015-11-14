@@ -14,8 +14,8 @@ import datetime, json, os
 app = Flask(__name__)
 
 # some global variables
-index_name = 'councilrec'
-type_name = 'recs'
+index_names = ['councilrec']
+type_names = ['recs']
 
 # create elasticsearch client instance
 es = Elasticsearch()
@@ -65,18 +65,23 @@ def council_records():
     min_amount = request.args.get('min_amount')
     max_amount = request.args.get('max_amount')
     search_query = request.args.get('search_query')
+    num_hits = request.args.get('num_hits') if request.args.get('num_hits') else 10 
 
     # generate the body, written in Elastic Search's DSL
     dsl_query = {
         "query" : {
-            "filter" : generate_filters(start_date, end_date, min_amount, max_amount)
+            "filtered" : {
+                "query" : {"match" : {"_all" : search_query}},
+                "filter" : generate_filters(start_date, end_date, min_amount, max_amount)
+            }
         }
     }
 
     # query Elastic Search for appropriate documents with respect to the query
-    res = es.search(index=index_name, body = dsl_query)
+    res = es.search(index=index_names, doc_type=type_names, body = dsl_query, size=num_hits)
 
-
+    # return the hits
+    jsonify(res['hits'])
 
 if __name__ == "__main__":
     app.run(port=9099, debug=True)
