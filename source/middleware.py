@@ -80,7 +80,12 @@ def council_records():
     dsl_query = {
         "query": {
             "filtered": {
-                "query": {"match": {"_all": search_query}},
+                "query": {
+                    "multi_match": {
+                        "query":    search_query,
+                        "fields":   ["title", "document"]
+                    }
+                },
                 "filter": generate_filters(start_date, end_date, min_amount, max_amount)
             }
         }
