@@ -91,7 +91,7 @@ def council_records():
                     body=dsl_query, size=num_hits)
 
     # return the hits
-    return json.dump(res['hits'])
+    return jsonify(res['hits'])
 
 if __name__ == "__main__":
     app.run(port=9099)
