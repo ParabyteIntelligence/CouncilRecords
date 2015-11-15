@@ -155,7 +155,6 @@ function getNextPage() {
     function() {
       var codeToNextPage = $(window.ITEM_TABLE).find(window.NEXT_PAGE).prop('href');
       if (codeToNextPage) {
-        console.log('Code To Next Page: ', codeToNextPage);
         eval(codeToNextPage.split(':')[1]);
         return true;
       } else {
