@@ -30,6 +30,7 @@ class ProcurementDocument():
             "document": str(),  # entire body tag
             "url": str()
         }
+        self.remove_unicode = re.compile(r'[^\x00-\x7F]+')
 
     def parse(self, doc):
         """ This is the main method which is called to return the Python dictionary based on
@@ -80,7 +81,8 @@ class ProcurementDocument():
         texts = self.soup.findAll(text=True)
         visible_texts = filter(ProcurementDocument._visible_text, texts)
 
-        return " ".join(visible_texts)
+        visible_html = " ".join(visible_texts)
+        return self.remove_unicode.sub('', visible_html)
 
     @staticmethod
     def _visible_text(element):
