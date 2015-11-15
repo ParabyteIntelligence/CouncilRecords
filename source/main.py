@@ -89,8 +89,8 @@ def main(run_new_crawl=True):
     for doc in new_documents(doc_list, coll):
         parsed_doc = procurement.parse(doc)
         print("Parsed Doc: {}".format(parsed_doc))
-        coll.insert_one(parsed_doc)
         es.create(index=DB_NAME, doc_type=COLLECTION, body=parsed_doc)
+        coll.insert_one(parsed_doc)
         print "New Item Added: {}".format(parsed_doc['item_id'])
 
     es.indicies.refresh(index=DB_NAME)
