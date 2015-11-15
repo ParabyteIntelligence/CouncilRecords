@@ -8,5 +8,5 @@ setup(name='CouncilRecords',
       author='Parabyte Intelligence LLC',
       author_email='contact@parabyte.io',
       url='parabyte.io',
-      packages=['source'],
-     )
+      packages=['server'],
+      )

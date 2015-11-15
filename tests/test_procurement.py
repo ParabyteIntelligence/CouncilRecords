@@ -10,7 +10,7 @@ import datetime
 import re
 import sys
 import requests
-from source.procurement import ProcurementDocument
+from server.procurement import ProcurementDocument
 
 ### ProcurementDocument class ###
 

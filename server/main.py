@@ -32,7 +32,7 @@ def main(run_new_crawl=True):
     # Call the PhantomJS Crawler
     if run_new_crawl:
         print("INFO: Running Crawler")
-        call(["phantomjs", "phantomjs/get-documents.js"])
+        call(["phantomjs", "crawler/get-documents.js"])
         print("INFO: Crawler Finished")
 
     # Read the JSON into doc_list

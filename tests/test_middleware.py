@@ -5,9 +5,10 @@ Author: Rakshak Talwar
 Description: Tests the API which connects the client to the backend
 """
 import datetime
-from source.middleware import generate_filters
+from server.middleware import generate_filters
 
 ### generate_filters function ###
+
 
 def test_generate_filters():
     """ testing the generate_filters function """
@@ -20,11 +21,13 @@ def test_generate_filters():
     search_query = "houston first"
     num_hits = 10
 
-    # the filters we're going to test against, the output from the function we're testing should look like this
+    # the filters we're going to test against, the output from the function
+    # we're testing should look like this
     test_filters = [
-        {"range" : {"authorization_date" : {"from" : start_date, "to" : end_date} } },
-        {"range" : {"amount" : {"from" : min_amount, "to" : max_amount} } }
+        {"range": {"authorization_date": {"from": start_date, "to": end_date}}},
+        {"range": {"amount": {"from": min_amount, "to": max_amount}}}
     ]
 
     # test the function
-    assert test_filters == generate_filters(start_date, end_date, min_amount, max_amount)
+    assert test_filters == generate_filters(
+        start_date, end_date, min_amount, max_amount)
