@@ -11,6 +11,7 @@ from pymongo import MongoClient
 from subprocess import call
 import json
 from procurement import ProcurementDocument
+from elasticsearch import Elasticsearch
 
 DB_NAME = 'council_record'
 COLLECTION = 'procurement'
@@ -95,7 +96,7 @@ def main(run_new_crawl=True):
     es.indicies.refresh(index=DB_NAME)
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] is "nocrawl":
+    if len(sys.argv) > 1 and sys.argv[1] == "nocrawl":
         main(False)
     else:
         main()
