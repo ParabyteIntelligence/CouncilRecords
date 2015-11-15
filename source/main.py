@@ -31,19 +31,25 @@ def main(run_new_crawl=True):
 
     # Call the PhantomJS Crawler
     if run_new_crawl:
+        print("INFO: Running Crawler")
         call(["phantomjs", "phantomjs/get-documents.js"])
+        print("INFO: Crawler Finished")
 
-    # Parse JSON
+    # Read the JSON into doc_list
     with open('doc-list.json') as data_file:
+        print("INFO: Load JSON file output from crawler")
         doc_list = json.load(data_file)
 
     # Connect to MONGO Instance
+    print("INFO: Connecting to MongoDB")
     client = MongoClient()
     db = client[DB_NAME]
     coll = db[COLLECTION]
 
     # Connect to ES & Create Index
+    print("INFO: Connecting to ElasticSearch")
     es = Elasticsearch()
+    print("INFO: Checking if {} Index Exists".format(DB_NAME))
     if not es.indices.exists(index=DB_NAME):
         indicies_body = {
             "settings": {
@@ -84,17 +90,18 @@ def main(run_new_crawl=True):
                 }
             }
         }
+        print("INFO: Creating Index {}".format(DB_NAME))
         es.indices.create(index=DB_NAME, body=indicies_body)
 
     for doc in new_documents(doc_list, coll):
         parsed_doc = procurement.parse(doc)
-        print("Parsed Doc: {}".format(parsed_doc))
         es.create(index=DB_NAME, doc_type=COLLECTION,
                   body=parsed_doc)
         coll.insert_one(parsed_doc)
-        print "New Item Added: {}".format(parsed_doc['item_id'])
+        print("INFO: Item #{} Added!".format(parsed_doc['item_id']))
 
-    es.indicies.refresh(index=DB_NAME)
+    print("INFO: Refreshing Index {}".format(DB_NAME))
+    es.indices.refresh(index=DB_NAME)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == "nocrawl":

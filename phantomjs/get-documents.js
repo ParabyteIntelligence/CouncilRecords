@@ -6,16 +6,17 @@ var
   listOfDocuments = [],
   numOfPages = 0;
 
-page.onConsoleMessage = function(msg, lineNum, sourceId) {
-  console.log('CONSOLE: ' + JSON.stringify(msg) + ' (from line #' + lineNum + ' in "' + sourceId + '")');
-};
+// page.onConsoleMessage = function(msg, lineNum, sourceId) {
+//   console.log('CONSOLE: ' + JSON.stringify(msg) + ' (from line #' + lineNum + ' in "' + sourceId + '")');
+// };
 
 // Inject Selectors using external JS
 page.injectJs('lodash.js');
 
 page.open(page_address, function(status) {
   if (status !== 'success') {
-    console.log('FAILED to load the address: ', page_address);
+    console.log('ERROR: Failed to load the page: ', page_address);
+    console.log('INFO: Exiting Crawler')
     phantom.exit();
   } else {
     getDocuments();
@@ -44,17 +45,14 @@ function getDocuments() {
     window.ITEM_TABLE_WRAP = "#ctl00_ContentPlaceHolder1_SearchAgendasMeetings_ItemsPageView";
   });
 
-  console.log('Step1');
   queryFormSetup1();
 
   setTimeout(function() {
 
-    console.log('Step2');
     queryFormSetup2();
 
     setTimeout(function() {
 
-      console.log('Step3');
       queryFormSetup3();
 
       setTimeout(function() {
@@ -80,7 +78,6 @@ function getAllItems() {
     var newItems = getItemsOnCurrentPage();
     if (((listOfDocuments.length === 0) || (listOfDocuments[listOfDocuments.length - 1].item_id !== newItems[newItems.length - 1].item_id)) && getNextPage()) {
       numOfPages = numOfPages + 1;
-      console.log('Parsing page ', numOfPages);
       listOfDocuments.push.apply(listOfDocuments, newItems);
       getAllItems();
     } else {
@@ -92,13 +89,11 @@ function getAllItems() {
 }
 
 function getItemsOnCurrentPage() {
-  page.render('page-' + numOfPages + '.png');
   return page.evaluate(
     function() {
       var itemTable = $(window.ITEM_TABLE);
 
       var items = itemTable.find('tr.rgRow');
-      console.log('Is visible? ', items.is(':visible'));
       var itemsLength = items.length;
       var docList = [];
       for (var i = 0; i < itemsLength; i++) {
@@ -106,7 +101,6 @@ function getItemsOnCurrentPage() {
         var fields = $(item).find('td');
         var date = fields[0].innerText;
         var title = fields[1].innerText;
-        console.log(title, ' : ', fields[2].innerText);
         var link_attributes = $(item).find('a').attr('onclick').split('?')[1].split('&');
         var item_id = link_attributes[0].split('=')[1];
         var meeting_id = link_attributes[1].split('\'')[0].split('=')[1];
