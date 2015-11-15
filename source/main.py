@@ -43,7 +43,7 @@ def main(run_new_crawl=True):
     coll = db[COLLECTION]
 
     # Connect to ES & Create Index
-    es = ElasticSearch()
+    es = Elasticsearch()
     if not es.indices.exists(index=DB_NAME):
         indicies_body = {
             "settings": {
