@@ -73,7 +73,7 @@ def main(run_new_crawl=True):
                             "format": "strict_date_optional_time"
                         },
                         "amount": {
-                            "type": "long",
+                            "type": "double",
                             "index": "not_analyzed"
                         },
                         "document": {
