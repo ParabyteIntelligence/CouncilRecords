@@ -12,7 +12,6 @@ from subprocess import call
 import json
 from procurement import ProcurementDocument
 from elasticsearch import Elasticsearch
-import json
 
 DB_NAME = 'council_records'
 COLLECTION = 'records'
@@ -52,7 +51,7 @@ def main(run_new_crawl=True):
                 "number_of_replicas": 0
             },
             "mappings": {
-                "procurement": {
+                "records": {
                     "properties": {
                         "title": {
                             "type": "string"
@@ -91,7 +90,7 @@ def main(run_new_crawl=True):
         parsed_doc = procurement.parse(doc)
         print("Parsed Doc: {}".format(parsed_doc))
         es.create(index=DB_NAME, doc_type=COLLECTION,
-                  body=json.dumps(parsed_doc))
+                  body=parsed_doc)
         coll.insert_one(parsed_doc)
         print "New Item Added: {}".format(parsed_doc['item_id'])
 
