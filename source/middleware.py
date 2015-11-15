@@ -41,11 +41,11 @@ def generate_filters(start_date, end_date, min_amount, max_amount):
     # create amount range dict
     if min_amount and max_amount:  # if both min and max amount exist
         amount_range_dict = {"range": {"amount": {
-            "from": min_amount, "to": max_amount}}}
+            "from": float(min_amount), "to": float(max_amount)}}}
     elif (not min_amount) and max_amount:  # if only max amount exists
-        amount_range_dict = {"range": {"amount": {"lte": max_amount}}}
+        amount_range_dict = {"range": {"amount": {"lte": float(max_amount)}}}
     elif min_amount and (not max_amount):  # if only min amount exists
-        amount_range_dict = {"range": {"amount": {"gte": min_amount}}}
+        amount_range_dict = {"range": {"amount": {"gte": float(min_amount)}}}
     else:
         amount_range_dict = None
 
@@ -90,14 +90,8 @@ def council_records():
     res = es.search(index=index_names, doc_type=type_names,
                     body=dsl_query, size=num_hits)
 
-    # find all of the documents nested in res
-    response = []
-    for item in res['hits']['hits']:
-        for source in item['_source']:
-            response.append(source)
-
     # return the hits
-    return response
+    return json.dump(res['hits'])
 
 if __name__ == "__main__":
-    app.run(port=9099, debug=True)
+    app.run(port=9099)
