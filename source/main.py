@@ -6,6 +6,7 @@ Description: Adds Documents to Mongo & ElasticSearch
 
 """
 
+import sys
 from pymongo import MongoClient
 from subprocess import call
 import json
@@ -23,12 +24,13 @@ def new_documents(documents, collection):
     return new_docs
 
 
-def main():
+def main(run_new_crawl=True):
     # create instance of procurement doc
     procurement = ProcurementDocument()
 
     # Call the PhantomJS Crawler
-    call(["phantomjs", "phantomjs/get-documents.js"])
+    if run_new_crawl:
+        call(["phantomjs", "phantomjs/get-documents.js"])
 
     # Parse JSON
     with open('doc-list.json') as data_file:
@@ -93,4 +95,7 @@ def main():
     es.indicies.refresh(index=DB_NAME)
 
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] is "nocrawl":
+        main(False)
+    else:
+        main()
