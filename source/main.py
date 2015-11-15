@@ -13,8 +13,8 @@ import json
 from procurement import ProcurementDocument
 from elasticsearch import Elasticsearch
 
-DB_NAME = 'council_record'
-COLLECTION = 'procurement'
+DB_NAME = 'councilrec'
+COLLECTION = 'recs'
 
 
 def new_documents(documents, collection):
@@ -79,6 +79,10 @@ def main(run_new_crawl=True):
                         "document": {
                             "type": "string",
                             "index": "analyzed"
+                        },
+                        "_id": {
+                            "type": "string",
+                            "index": "not_analyzed"
                         }
                     }
                 }
@@ -89,8 +93,9 @@ def main(run_new_crawl=True):
     for doc in new_documents(doc_list, coll):
         parsed_doc = procurement.parse(doc)
         print("Parsed Doc: {}".format(parsed_doc))
-        es.create(index=DB_NAME, doc_type=COLLECTION, body=parsed_doc)
         coll.insert_one(parsed_doc)
+        parsed_doc._id = str(parsed_doc._id)
+        es.create(index=DB_NAME, doc_type=COLLECTION, body=parsed_doc)
         print "New Item Added: {}".format(parsed_doc['item_id'])
 
     es.indicies.refresh(index=DB_NAME)
