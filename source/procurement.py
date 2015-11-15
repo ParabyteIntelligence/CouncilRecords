@@ -84,7 +84,7 @@ class ProcurementDocument():
         visible_texts = filter(ProcurementDocument._visible_text, texts)
 
         visible_html = " ".join(visible_texts)
-        return self.remove_unicode.sub('', visible_html)
+        return self.remove_unicode.sub(' ', visible_html)
 
     @staticmethod
     def _visible_text(element):

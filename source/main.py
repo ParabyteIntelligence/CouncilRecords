@@ -54,13 +54,22 @@ def main(run_new_crawl=True):
         indicies_body = {
             "settings": {
                 "number_of_shards": 1,
-                "number_of_replicas": 0
+                "number_of_replicas": 0,
+                "analysis": {
+                    "analyzer": {
+                        "stem": {
+                            "tokenizer": "standard",
+                            "filter": ["standard", "lowercase", "stop", "porter_stem"]
+                        }
+                    }
+                }
             },
             "mappings": {
                 "records": {
                     "properties": {
                         "title": {
-                            "type": "string"
+                            "type": "string",
+                            "analyzer": "stem"
                         },
                         "item_id": {
                             "type": "string",
@@ -84,7 +93,8 @@ def main(run_new_crawl=True):
                         },
                         "document": {
                             "type": "string",
-                            "index": "analyzed"
+                            "index": "analyzed",
+                            "analyzer": "stem"
                         }
                     }
                 }
