@@ -43,7 +43,7 @@ def test_parse():
         "meeting_id": 126,
         "title": doc['title'],
         "amount": 753750.00,
-        "authorization_date": datetime.datetime(2015, 11, 10),
+        "authorization_date": datetime.datetime(2015, 11, 10).isoformat(),
         "document": bod
     }
 
@@ -53,7 +53,7 @@ def test_parse():
 
 def test_find_authorization_date():
     assert inst._find_authorization_date(
-        '11/10/2015') == datetime.datetime(2015, 11, 10)
+        '11/10/2015') == datetime.datetime(2015, 11, 10).isoformat()
 
 
 def test_find_amount():

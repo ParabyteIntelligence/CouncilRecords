@@ -25,8 +25,7 @@ class ProcurementDocument():
             # use regex to find any number starting with a $ and grab the
             # biggest number since it's total
             "amount": float(),
-            "authorization_date": datetime.datetime(2000, 1, 1),
-            "document_date": datetime.datetime(2000, 1, 1),
+            "authorization_date": datetime.datetime(2000, 1, 1).isoformat(),
             "document": str(),  # entire body tag
             "url": str()
         }
@@ -60,7 +59,8 @@ class ProcurementDocument():
         date_ls = doc_date.split('/')
         year, month, day = int(date_ls[2]), int(date_ls[0]), int(date_ls[1])
 
-        return datetime.datetime(year, month, day)  # return date object
+        # return date object
+        return datetime.datetime(year, month, day).isoformat()
 
     def _find_amount(self):
         """Finds the greatest dollar amount in the entire document"""
