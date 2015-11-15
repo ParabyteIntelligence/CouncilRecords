@@ -57,6 +57,8 @@ class ProcurementDocument():
         """Returns the document's creation date as a python datetime object"""
 
         date_ls = doc_date.split('/')
+        if len(date_ls[2].strip) == 2:
+            date_ls = "20" + date_ls
         year, month, day = int(date_ls[2]), int(date_ls[0]), int(date_ls[1])
 
         # return date object
