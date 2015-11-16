@@ -1,0 +1,51 @@
+<div class="container">
+
+  <div class="jumbotron text-center">
+    <h1>Council Records</h1>
+
+    <form class="form-horizontal" ng-submit="vm.search()">
+      <div class="form-group">
+        <div class="col-lg-6 col-lg-offset-3">
+          <input type="text" class="form-control" placeholder="Text Search" ng-model="vm.query.search_query">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-3 col-lg-offset-3">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input dateselector type="text" class="form-control" placeholder="Start Date" ng-model="vm.query.start_date">
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input dateselector type="text" class="form-control" placeholder="End Date" ng-model="vm.query.end_date">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-3 col-lg-offset-3">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+            <input type="text" class="form-control" placeholder="Min Amount" ng-model="vm.query.min_amount">
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+            <input type="text" class="form-control" placeholder="Max Amount" ng-model="vm.query.max_amount">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-6 col-lg-offset-3">
+          <input type="submit" value="Search" class="btn btn-primary btn-block">
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
