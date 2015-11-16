@@ -15,7 +15,9 @@
 
     function search(query) {
 
-      return $http.post('http://localhost:9099/search', query);
+      return $http.get('http://localhost:9099/search', {
+        params: query
+      });
 
     }
   }

@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($log, Records) {
+  function MainController($log, $state) {
     var vm = this;
 
     vm.query = {
@@ -16,16 +16,14 @@
       'min_amount': '',
       'max_amount': ''
     }
-    vm.search_results = [];
 
     vm.search = search;
 
     function search() {
-      $log.log('test');
-      Records.search(vm.query).then(function(data) {
-        $log.log(data);
-        vm.search_results = data.data;
-      })
+      var t = _.clone(vm.query);
+      t.start_date = moment(vm.query.start_date).format();;
+      t.end_date = moment(vm.query.end_date).format();
+      $state.go('search.result', t);
     }
   }
 })();
