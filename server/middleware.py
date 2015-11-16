@@ -7,6 +7,7 @@ Description: The REST API which connects the client to the backend
 """
 
 from flask import Flask, jsonify, request, url_for
+from flask.ext.cors import CORS
 from elasticsearch import Elasticsearch
 import datetime
 import json
@@ -14,6 +15,7 @@ import os
 
 # create the application object
 app = Flask(__name__)
+CORS(app)
 
 # some global variables
 index_names = ['council_records']
