@@ -12,7 +12,7 @@
     vm.results = [];
 
     Records.search($state.params).then(function(data) {
-      vm.results = data.data.hits;
+      vm.results = data.hits;
     }, function(error) {
       $log.error(error);
     })

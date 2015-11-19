@@ -7,8 +7,7 @@
 
   /** @ngInject */
   function runBlock($log) {
-
-    $log.debug('runBlock end');
+    $log.debug('Done Setup!');
   }
 
 })();

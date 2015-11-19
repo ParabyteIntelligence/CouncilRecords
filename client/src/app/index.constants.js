@@ -3,6 +3,7 @@
 
   angular
     .module('CouncilRecords')
-    .constant('moment', moment);
+    .constant('moment', moment)
+    .constant('_', _);
 
 })();
