@@ -1,16 +1,14 @@
-<table class="table table-responsive" ng-if="vm.results.length">
+<table class="table table-responsive text-left" ng-if="vm.results.length">
   <thead>
-    <th>Title</th>
-    <th>Date</th>
-    <th>Amount</th>
-    <th>Link</th>
+    <th style="width:75%">Title</th>
+    <th style="width:100px">Date</th>
+    <th style="width:150px">Amount</th>
   </thead>
   <tbody>
     <tr ng-repeat="result in vm.results">
-      <td>{{::result._source.title}}</td>
-      <td>{{::result._source.authorization_date}}</td>
+      <td><a href="{{::result._source.url}}" target="_blank">{{::result._source.title}}</a></td>
+      <td>{{::result._source.authorization_date|date}}</td>
       <td>{{::result._source.amount|currency}}</td>
-      <td><a href="{{::result._source.url}}" target="_blank"><i class="fa fa-file-text"></i></a></td>
     </tr>
   </tbody>
 </table>

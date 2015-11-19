@@ -11,6 +11,8 @@
       $log = _$log_;
       $state = _$state_;
 
+      $state.params = null;
+
       vm = _$controller_('MainController', {
         $scope: $scope,
         $log: $log,

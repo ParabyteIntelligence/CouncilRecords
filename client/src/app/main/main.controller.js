@@ -9,12 +9,20 @@
   function MainController($log, $state, _, moment) {
     var vm = this;
 
-    vm.query = {
+    vm.query = $state.params || {
       search_query: '',
       start_date: '',
       end_date: '',
       min_amount: '',
       max_amount: ''
+    }
+
+    if (vm.query.start_date != '') {
+      vm.query.start_date = moment(vm.query.start_date).format('L');
+    }
+
+    if (vm.query.end_date != '') {
+      vm.query.end_date = moment(vm.query.end_date).format('L');
     }
 
     vm.search = search;
