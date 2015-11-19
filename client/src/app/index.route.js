@@ -11,7 +11,7 @@
     $stateProvider
       .state('search', {
         url: '/',
-        templateUrl: '/app/main/main.html',
+        templateUrl: 'app/main/main.html',
         controller: 'MainController',
         controllerAs: 'vm'
       })
@@ -19,7 +19,7 @@
         url: 'query?search_query&start_date&end_date&min_amount&max_amount',
         views: {
           'results': {
-            templateUrl: '/app/result/result.html',
+            templateUrl: 'app/result/result.html',
             controller: 'ResultController',
             controllerAs: 'vm'
           }
