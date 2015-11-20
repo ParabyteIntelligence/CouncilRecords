@@ -15,7 +15,7 @@
 
     function search(query) {
 
-      return $http.get('http://' + $location.host() + ':9099/search', {
+      return $http.get('http://' + $location.host() + ':8080/search', {
         params: query
       }).then(function(res) {
         return res.data;
