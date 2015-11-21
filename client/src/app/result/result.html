@@ -1,8 +1,10 @@
-<table class="table table-responsive text-left" ng-if="vm.results.length">
+<table st-table="rowCollection" class="table table-striped">
   <thead>
-    <th style="width:75%">Title</th>
-    <th style="width:100px">Date</th>
-    <th style="width:150px">Amount</th>
+    <tr>
+      <th>Title</th>
+      <th>Date</th>
+      <th>Amount</th>
+    </tr>
   </thead>
   <tbody>
     <tr ng-repeat="result in vm.results">
@@ -11,4 +13,11 @@
       <td>{{::result._source.amount|currency}}</td>
     </tr>
   </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="5" class="text-center">
+        <div st-pagination="" st-items-by-page="10"></div>
+      </td>
+    </tr>
+  </tfoot>
 </table>
