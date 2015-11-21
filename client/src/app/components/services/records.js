@@ -24,10 +24,10 @@
       }
       params.search_query = query.search_query;
       if (params.min_amount) {
-        min_amount = query.min_amount;
+        params.min_amount = query.min_amount;
       }
       if (params.max_amount) {
-        max_amount = query.max_amount;
+        params.max_amount = query.max_amount;
       }
       params.num_hits = 50;
 
