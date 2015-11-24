@@ -11,7 +11,6 @@ import re
 import bs4
 import requests
 
-
 class ProcurementDocument():
     """Pass in a url, title, meeting_id, and item_id for a City Council procurement. Returns a Python dictionary with procurement information."""
 
@@ -27,6 +26,7 @@ class ProcurementDocument():
             "amount": float(),
             "authorization_date": datetime.datetime(2000, 1, 1).isoformat(),
             "document": str(),  # entire body tag
+            "summary" : str(), # the summary from the procurement document
             "url": str()
         }
         self.remove_unicode = re.compile(r'[^\x00-\x7F]+')
@@ -50,7 +50,8 @@ class ProcurementDocument():
             'url': url,
             "amount": self._find_amount(),
             "authorization_date": self._find_authorization_date(doc['date']),
-            "document": self._find_document()
+            "document": self._find_document(),
+            "summary" : self._find_summary()
         }
 
     def _find_authorization_date(self, doc_date):
@@ -85,6 +86,11 @@ class ProcurementDocument():
 
         visible_html = " ".join(visible_texts)
         return self.remove_unicode.sub(' ', visible_html)
+
+    def _find_summary(self):
+        """Returns the summary of the document"""
+        summary = self.soup.find_all('td', attrs={'id' : 'column1', 'colspan' : '8'})[1].text
+        return summary
 
     @staticmethod
     def _visible_text(element):

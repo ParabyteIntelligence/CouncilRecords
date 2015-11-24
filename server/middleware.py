@@ -60,9 +60,8 @@ def generate_filters(start_date, end_date, min_amount, max_amount):
 
     return filters
 
+
 # the main request route
-
-
 @app.route('/search', methods=['GET'])
 def council_records():
     """Returns a respective JSON object when issued a query"""

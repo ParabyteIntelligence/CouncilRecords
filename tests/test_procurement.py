@@ -58,3 +58,6 @@ def test_find_authorization_date():
 
 def test_find_amount():
     assert inst._find_amount() == 753750.00
+
+def test_find_summary():
+    assert inst._find_summary() == u'Summary:S & S WORLDWIDE, INC for Recreational, Educational and Miscellaneous Supplies for Various Departments - 3 Years with two one-year options - $753,750.00 - General, Enterprise and Other Funds'
