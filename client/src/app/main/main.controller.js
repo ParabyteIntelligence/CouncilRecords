@@ -1,5 +1,5 @@
 export class MainController {
-  constructor($scope, $document, $log, $state, $timeout, $mdDialog, $mdMedia, lodash, moment, Search) {
+  constructor($document, $log, $state, $timeout, $mdDialog, $mdMedia, lodash, moment, Search) {
     'ngInject';
 
     var vm = this;
@@ -21,10 +21,10 @@ export class MainController {
         num_hits: 1000,
         search_query: vm.search
       };
-      if (lodash.isNumber(vm.minAmt)) {
+      if (lodash.isNumber(vm.minAmt) && vm.minAmt >= 0) {
         query.min_amount = vm.minAmt;
       }
-      if (lodash.isNumber(vm.maxAmt)) {
+      if (lodash.isNumber(vm.maxAmt) && vm.maxAmt >= 0) {
         query.max_amount = vm.maxAmt;
       }
       if (lodash.isDate(vm.startDate)) {
@@ -63,7 +63,7 @@ export class MainController {
         parent: angular.element($document.body),
         targetEvent: ev,
         clickOutsideToClose: true,
-        fullscreen: $mdMedia('sm') && $scope.customFullscreen
+        fullscreen: $mdMedia('sm')
       })
     }
   }
