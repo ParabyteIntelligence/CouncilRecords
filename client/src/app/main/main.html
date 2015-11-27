@@ -42,9 +42,9 @@
   <md-list flex="80">
     <md-list-item class="md-3-line" ng-repeat="result in vm.results">
       <div class="md-list-item-text" layout="column">
-        <h3><a href="{{::result.link}}">{{::result.title}}</a></h3>
-        <h4>{{::result.date|date}} | {{::result.amount|currency}}</h4>
-        <p>{{::result.summary}}</p>
+        <h3><a href="{{::result._source.url}}">{{::result._source.title}}</a></h3>
+        <h4>{{::result._source.authorization_date|date}} | {{::result._source.amount|currency}}</h4>
+        <p>{{::result._source.summary}}</p>
         <md-divider ng-if="!$last"></md-divider>
       </div>
     </md-list-item>
