@@ -1,13 +1,4 @@
-(function() {
-  'use strict';
-
-  angular
-    .module('CouncilRecords')
-    .run(runBlock);
-
-  /** @ngInject */
-  function runBlock($log) {
-    $log.debug('Done Setup!');
-  }
-
-})();
+export function runBlock ($log) {
+  'ngInject';
+  $log.debug('runBlock end');
+}

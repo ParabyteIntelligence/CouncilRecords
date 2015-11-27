@@ -13,6 +13,10 @@
           "module": "ngSanitize"
         },
         {
+          "key": "messages",
+          "module": "ngMessages"
+        },
+        {
           "key": "aria",
           "module": "ngAria"
         }
@@ -29,25 +33,27 @@
         "module": "ui.router"
       },
       "ui": {
-        "key": "bootstrap",
-        "module": null
-      },
-      "bootstrapComponents": {
-        "key": "ui-bootstrap",
-        "module": "ui.bootstrap"
+        "key": "angular-material",
+        "module": "ngMaterial"
       },
       "cssPreprocessor": {
         "key": "less",
         "extension": "less"
       },
       "jsPreprocessor": {
-        "key": "noJsPrepro",
+        "key": "babel",
         "extension": "js",
-        "srcExtension": "js"
+        "srcExtension": "es6"
       },
       "htmlPreprocessor": {
         "key": "noHtmlPrepro",
         "extension": "html"
+      },
+      "bootstrapComponents": {
+        "name": null,
+        "version": null,
+        "key": null,
+        "module": null
       },
       "foundationComponents": {
         "name": null,

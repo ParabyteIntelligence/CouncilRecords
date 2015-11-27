@@ -1,15 +1,31 @@
-(function() {
-  'use strict';
+/* global _:false, moment:false */
 
-  angular
-    .module('CouncilRecords', [
-      'ngAnimate',
-      'ngSanitize',
-      'ngAria',
-      'ui.router',
-      'ui.bootstrap',
-      'toastr',
-      'smart-table'
-    ]);
-
-})();
+import {
+  config
+}
+from './index.config';
+import {
+  routerConfig
+}
+from './index.route';
+import {
+  runBlock
+}
+from './index.run';
+import {
+  Search
+}
+from './main/search.service.js'
+import {
+  MainController
+}
+from './main/main.controller';
+angular.module('CouncilRecords', ['ngAnimate', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'toastr'])
+  .constant('moment', moment)
+  .config(config)
+  .config(routerConfig)
+  .run(runBlock)
+  .controller('MainController', MainController)
+  .constant('lodash', _)
+  .constant('moment', moment)
+  .service('Search', Search);

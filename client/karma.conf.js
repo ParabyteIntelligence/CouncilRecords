@@ -18,15 +18,12 @@ function listFiles() {
 
   return wiredep(wiredepOptions).js
     .concat([
-      path.join(conf.paths.src, '/app/**/*.module.js'),
-      path.join(conf.paths.src, '/app/**/*.js'),
-      path.join(conf.paths.src, '/**/*.spec.js'),
-      path.join(conf.paths.src, '/**/*.mock.js'),
+      path.join(conf.paths.tmp, '/serve/app/index.module.js'),
     ])
     .concat(pathSrcHtml);
 }
 
-module.exports = function(config) {
+module.exports = function (config) {
 
   var configuration = {
     files: listFiles(),
@@ -42,17 +39,12 @@ module.exports = function(config) {
 
     logLevel: 'WARN',
 
-    frameworks: ['jasmine', 'angular-filesort'],
-
-    angularFilesort: {
-      whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
-    },
+    frameworks: ['jasmine'],
 
     browsers: ['PhantomJS'],
 
     plugins: [
       'karma-phantomjs-launcher',
-      'karma-angular-filesort',
       'karma-coverage',
       'karma-jasmine',
       'karma-ng-html2js-preprocessor',
@@ -72,7 +64,7 @@ module.exports = function(config) {
   // It was not possible to do it there because karma doesn't let us now if we are
   // running a single test or not
   configuration.preprocessors = {};
-  pathSrcHtml.forEach(function(path) {
+  pathSrcHtml.forEach(function (path) {
     configuration.preprocessors[path] = ['ng-html2js'];
   });
 

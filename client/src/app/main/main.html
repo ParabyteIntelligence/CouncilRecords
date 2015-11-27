@@ -1,53 +1,53 @@
-<div class="container">
-
-  <div class="jumbotron text-center">
-    <h1>Council Records</h1>
-
-    <form class="form-horizontal" ng-submit="vm.search()">
-      <div class="form-group">
-        <div class="col-lg-6 col-lg-offset-3">
-          <input type="text" class="form-control" placeholder="Text Search" ng-model="vm.query.search_query">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-lg-3 col-lg-offset-3">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-            <input dateselector type="text" class="form-control" placeholder="Start Date" ng-model="vm.query.start_date">
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-            <input dateselector type="text" class="form-control" placeholder="End Date" ng-model="vm.query.end_date">
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-lg-3 col-lg-offset-3">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-            <input type="text" class="form-control" placeholder="Min Amount" ng-model="vm.query.min_amount">
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-usd"></i></span>
-            <input type="text" class="form-control" placeholder="Max Amount" ng-model="vm.query.max_amount">
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-lg-6 col-lg-offset-3">
-          <input type="submit" value="Search" class="btn btn-primary btn-block">
-        </div>
-      </div>
-    </form>
-
-    <div ui-view="results"></div>
+<md-toolbar layout="row" layout-align="center center">
+  <div flex class="align-center">
+    <h3>
+      Council Records
+      <md-button ng-click="vm.showInfo()" style="font-family:Mallanna">by ParaByte</md-button>
+    </h3>
   </div>
+</md-toolbar>
+<md-subheader class="md-sticky align-center" layout="row">
+  <form class="search-form">
+    <md-autocomplete md-search-text="vm.search" md-items="item in vm.findResults(vm.search)" md-min-length="4" md-item-text="item" placeholder="Search for People, Companies, Keywords">
+      <md-item-template>
+        <span md-highlight-text="vm.search">
+          {{item}}
+        </span>
+      </md-item-template>
+    </md-autocomplete>
+    <div layout="row">
+      <md-input-container class="md-icon-left" flex>
+        <label>Min Amount</label>
+        <md-icon>
+          <i class="material-icons">attach_money</i>
+        </md-icon>
+        <input type="number" step="1" name="rate" max-amount="{{vm.maxAmt}}" ng-model="vm.minAmt" />
+      </md-input-container>
+      <md-input-container class="md-icon-left" flex>
+        <label>Max Amount</label>
+        <md-icon>
+          <i class="material-icons">attach_money</i>
+        </md-icon>
+        <input flex type="number" step="1" name="rate" min-amount="{{vm.minAmt}}" ng-model="vm.maxAmt" />
+      </md-input-container>
+    </div>
+    <div layout="row">
+      <md-datepicker flex layout-align="center center" ng-model="vm.startDate" md-placeholder="Start Date"></md-datepicker>
+      <md-datepicker flex ng-model="vm.endDate" md-placeholder="End Date"></md-datepicker>
+    </div>
+    <md-button class="md-raised md-primary" ng-click="vm.doSearch()">Search</md-button>
+  </form>
+</md-subheader>
+<md-content layout-fill layout-align="center start" layout="row">
+  <md-list flex="80">
 
-</div>
+    <md-list-item class="md-3-line" ng-repeat="result in vm.results">
+      <div class="md-list-item-text" layout="column">
+        <h3><a href="{{::result.link}}">{{::result.title}}</a></h3>
+        <h4>{{::result.date|date}} | {{::result.amount|currency}}</h4>
+        <p>{{::result.summary}}</p>
+        <md-divider ng-if="!$last"></md-divider>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-content>

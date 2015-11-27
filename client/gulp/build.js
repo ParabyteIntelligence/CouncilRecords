@@ -8,7 +8,7 @@ var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
 });
 
-gulp.task('partials', function() {
+gulp.task('partials', function () {
   return gulp.src([
       path.join(conf.paths.src, '/app/**/*.html'),
       path.join(conf.paths.tmp, '/serve/app/**/*.html')
@@ -25,7 +25,7 @@ gulp.task('partials', function() {
     .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
 });
 
-gulp.task('html', ['inject', 'partials'], function() {
+gulp.task('html', ['inject', 'partials'], function () {
   var partialsInjectFile = gulp.src(path.join(conf.paths.tmp, '/partials/templateCacheHtml.js'), {
     read: false
   });
@@ -52,7 +52,6 @@ gulp.task('html', ['inject', 'partials'], function() {
     .pipe($.rev())
     .pipe(jsFilter)
     .pipe($.sourcemaps.init())
-    .pipe($.ngAnnotate())
     .pipe($.uglify({
       preserveComments: $.uglifySaveLicense
     })).on('error', conf.errorHandler('Uglify'))
@@ -60,8 +59,7 @@ gulp.task('html', ['inject', 'partials'], function() {
     .pipe(jsFilter.restore)
     .pipe(cssFilter)
     .pipe($.sourcemaps.init())
-    .pipe($.replace('../../bower_components/bootstrap/fonts/', '../fonts/'))
-    .pipe($.replace('../../bower_components/font-awesome/fonts', '../fonts/'))
+    .pipe($.replace('../../bower_components/material-design-iconfont/iconfont/', '../fonts/'))
     .pipe($.minifyCss({
       processImport: false
     }))
@@ -87,15 +85,15 @@ gulp.task('html', ['inject', 'partials'], function() {
 
 // Only applies for fonts from bower dependencies
 // Custom fonts are handled by the "other" task
-gulp.task('fonts', function() {
-  return gulp.src($.mainBowerFiles())
+gulp.task('fonts', function () {
+  return gulp.src($.mainBowerFiles().concat('bower_components/material-design-iconfont/iconfont/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
     .pipe($.flatten())
     .pipe(gulp.dest(path.join(conf.paths.dist, '/fonts/')));
 });
 
-gulp.task('other', function() {
-  var fileFilter = $.filter(function(file) {
+gulp.task('other', function () {
+  var fileFilter = $.filter(function (file) {
     return file.stat.isFile();
   });
 
@@ -107,7 +105,7 @@ gulp.task('other', function() {
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
-gulp.task('clean', function() {
+gulp.task('clean', function () {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
 

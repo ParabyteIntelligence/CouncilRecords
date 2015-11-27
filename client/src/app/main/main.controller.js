@@ -1,37 +1,82 @@
-(function() {
-  'use strict';
+export class MainController {
+  constructor($scope, $document, $log, $state, $timeout, $mdDialog, $mdMedia, lodash, moment, Search) {
+    'ngInject';
 
-  angular
-    .module('CouncilRecords')
-    .controller('MainController', MainController);
-
-  /** @ngInject */
-  function MainController($log, $state, _, moment) {
     var vm = this;
 
-    vm.query = $state.params || {
-      search_query: '',
-      start_date: '',
-      end_date: '',
-      min_amount: '',
-      max_amount: ''
+    this.results = [];
+    this.delay = 1000;
+    this.minAmt = parseFloat($state.params.minAmt);
+    this.maxAmt = parseFloat($state.params.maxAmt);
+    this.startDate = lodash.isUndefined($state.params.startDate) ? '' : moment($state.params.startDate, "YYYYMMDD").toDate();
+    this.endDate = lodash.isUndefined($state.params.endDate) ? '' : moment($state.params.endDate, "YYYYMMDD").toDate();
+    this.search = $state.params.search;
+
+    this.showInfo = showInfo;
+    this.findResults = findResults;
+    this.doSearch = doSearch;
+
+    function findResults() {
+      var query = {
+        num_hits: 1000,
+        search_query: vm.search
+      };
+      if (lodash.isNumber(vm.minAmt)) {
+        query.min_amount = vm.minAmt;
+      }
+      if (lodash.isNumber(vm.maxAmt)) {
+        query.max_amount = vm.maxAmt;
+      }
+      if (lodash.isDate(vm.startDate)) {
+        query.start_date = vm.startDate;
+      }
+      if (lodash.isDate(vm.endDate)) {
+        query.end_date = vm.endDate;
+      }
+      return Search.search(query).then(function (data) {
+        vm.results = data.hits;
+        return data.autocomplete;
+      })
     }
 
-    if (vm.query.start_date != '') {
-      vm.query.start_date = moment(vm.query.start_date).format('L');
+    function doSearch() {
+      var goParams = {
+        search: vm.search,
+        minAmt: vm.minAmt,
+        maxAmt: vm.maxAmt
+      }
+      if (lodash.isDate(vm.startDate)) {
+        goParams['startDate'] = moment(vm.startDate).format('YYYYMMDD');
+      }
+      if (lodash.isDate(vm.endDate)) {
+        goParams['endDate'] = moment(vm.endDate).format('YYYYMMDD');
+      }
+      $state.go('.', goParams);
     }
 
-    if (vm.query.end_date != '') {
-      vm.query.end_date = moment(vm.query.end_date).format('L');
-    }
 
-    vm.search = search;
 
-    function search() {
-      var t = _.clone(vm.query);
-      t.start_date = moment(vm.query.start_date, 'MM-DD-YYYY').format();
-      t.end_date = moment(vm.query.end_date, 'MM-DD-YYYY').format();
-      $state.go('search.result', t);
+    function showInfo(ev) {
+      $mdDialog.show({
+        controller: DialogController,
+        templateUrl: 'app/main/dialog.tmpl.html',
+        parent: angular.element($document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true,
+        fullscreen: $mdMedia('sm') && $scope.customFullscreen
+      })
     }
   }
-})();
+}
+
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function () {
+    $mdDialog.hide();
+  };
+  $scope.cancel = function () {
+    $mdDialog.cancel();
+  };
+  $scope.answer = function (answer) {
+    $mdDialog.hide(answer);
+  };
+}
