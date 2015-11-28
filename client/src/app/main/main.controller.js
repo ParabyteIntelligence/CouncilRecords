@@ -18,7 +18,7 @@ export class MainController {
     this.findResults = findResults;
     this.doSearch = doSearch;
 
-    if (_.isString(this.search) && this.search.length > 0) {
+    if (lodash.isString(this.search) && this.search.length > 0) {
       findResults();
     }
 
