@@ -69,14 +69,12 @@ class ProcurementDocument():
         """Finds the greatest dollar amount in the entire document"""
         pattern = re.compile('(\$(\d*\,){0,}\d{1,3}\.\d{2})')
         items = [pattern.search(item.text).group(1) for item in self.soup.find_all('strong', string=pattern)]
-        #print(items)
         amounts = []
         for amount in items:
             amount = amount.replace('$', '')
             amount = amount.replace(',', '')
             amounts.append(float(amount))
         sorted_amounts = sorted(amounts)
-        #print(sorted_amounts)
         try:
             return sorted_amounts[-1]
         except:
