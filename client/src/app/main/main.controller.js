@@ -18,6 +18,10 @@ export class MainController {
     this.findResults = findResults;
     this.doSearch = doSearch;
 
+    if (_.isString(this.search) && this.search.length > 0) {
+      findResults();
+    }
+
     function findResults() {
       var query = {
         num_hits: 1000,
