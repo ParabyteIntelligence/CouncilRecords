@@ -20,7 +20,7 @@ import {
   MainController
 }
 from './main/main.controller';
-angular.module('CouncilRecords', ['ngAnimate', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'ngMaterial', 'toastr'])
+angular.module('CouncilRecords', ['ngAnimate', 'ngSanitize', 'ngMessages', 'ngAria', 'ui.router', 'md.data.table', 'ngMaterial', 'toastr'])
   .constant('moment', moment)
   .config(config)
   .config(routerConfig)
