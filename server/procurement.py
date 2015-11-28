@@ -67,16 +67,20 @@ class ProcurementDocument():
 
     def _find_amount(self):
         """Finds the greatest dollar amount in the entire document"""
-
         pattern = re.compile('(\$(\d*\,){0,}\d{1,3}\.\d{2})')
-        items = re.findall(pattern, self.soup.text)
+        items = [pattern.search(item.text).group(1) for item in self.soup.find_all('strong', string=pattern)]
+        #print(items)
         amounts = []
-        for tup in items:
-            a1 = tup[0].replace('$', '')
-            a1 = a1.replace(',', '')
-            amounts.append(float(a1))
+        for amount in items:
+            amount = amount.replace('$', '')
+            amount = amount.replace(',', '')
+            amounts.append(float(amount))
         sorted_amounts = sorted(amounts)
-        return sorted_amounts[-1]
+        #print(sorted_amounts)
+        try:
+            return sorted_amounts[-1]
+        except:
+            return None
 
     def _find_document(self):
         """Finds the visible text inside of the document"""
