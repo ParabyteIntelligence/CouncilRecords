@@ -42,6 +42,7 @@ export class MainController {
       vm.deferred = Search.search(query).then(function (data) {
         vm.results = data.hits;
       }).$promise;
+      return [];
     }
 
     function doSearch() {
