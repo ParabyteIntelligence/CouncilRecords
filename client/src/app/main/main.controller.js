@@ -11,6 +11,7 @@ export class MainController {
     this.startDate = lodash.isUndefined($state.params.startDate) ? '' : moment($state.params.startDate, "YYYYMMDD").toDate();
     this.endDate = lodash.isUndefined($state.params.endDate) ? '' : moment($state.params.endDate, "YYYYMMDD").toDate();
     this.search = $state.params.search;
+    this.page = 1;
 
     this.showInfo = showInfo;
     this.findResults = findResults;
