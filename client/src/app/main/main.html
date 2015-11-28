@@ -51,7 +51,7 @@
     </md-data-table-toolbar>
 
     <md-data-table-container>
-      <table md-data-table md-row-select="selected" md-progress="deferred">
+      <table md-data-table md-progress="vm.deferred">
         <tbody>
           <tr md-auto-select ng-repeat="result in vm.results" layout="row" style="height: 90px;">
             <td flex="70" style="overflow:hidden;">
@@ -65,6 +65,6 @@
       </table>
     </md-data-table-container>
 
-    <md-data-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{desserts.total}}" md-trigger="onPaginationChange"></md-data-table-pagination>
+    <md-data-table-pagination md-limit="vm.limit" md-page="vm.page" md-total="vm.results.length"></md-data-table-pagination>
   </div>
 </md-content>
