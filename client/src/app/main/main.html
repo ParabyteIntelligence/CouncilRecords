@@ -53,7 +53,7 @@
     <md-data-table-container>
       <table md-data-table md-row-select="selected" md-progress="deferred">
         <tbody>
-          <tr md-auto-select ng-repeat="result in vm.results" layout="row">
+          <tr md-auto-select ng-repeat="result in vm.results" layout="row" style="height: 90px;">
             <td flex="70" style="overflow:hidden;">
               <h4><a href="{{::result._source.url}}" target="_blank">{{::result._source.title}}</a></h4>
               <p>JOHNSTON TECHNICAL SERVICES, INC d/b/a JTS for Communication Tower Installation Construction Services through the Texas Department of Information Resources for the Department of Public Works &amp; Engineering - $227,579.28 - Enterprise Fund</p>
