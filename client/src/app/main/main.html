@@ -51,7 +51,7 @@
     </md-data-table-toolbar>
 
     <md-data-table-container>
-      <table md-data-table md-progress="vm.deferred">
+      <table md-data-table>
         <tbody>
           <tr md-auto-select ng-repeat="result in vm.results | limitTo: vm.limit: (vm.page - 1) * vm.limit" layout="row" style="height: 90px;">
             <td flex="70" style="overflow:hidden;">
