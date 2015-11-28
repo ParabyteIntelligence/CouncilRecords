@@ -55,11 +55,12 @@
         <tbody>
           <tr md-auto-select ng-repeat="result in vm.results" layout="row">
             <td flex="80">
-              <h3>{{::result._source.title}}</h3>
-              <h4>{{::result._source.authorization_date | date}}</h4>
-              <p>{{::result._source.summary}}</p>
+              {{::result._source.title}}
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in imperdiet urna. Praesent nec luctus tortor, ut convallis ligula. Vestibulum gravida, risus sed hendrerit ultricies, neque nisi iaculis lorem, quis porta tortor erat in lacus.
+                Proin pretium sollicitudin luctus. Proin quis dignissim sem. Vivamus dui ligula, imperdiet id iaculis nec, lacinia in nunc. Integer blandit hendrerit pulvinar. Nulla venenatis efficitur ante.</p>
             </td>
-            <td flex="20">{{::result._source.amount}}</td>
+            <td flex="10">{{::result._source.amount | currency}}</td>
+            <td flex="10">{{::result._source.authorization_date | date}}</td>
           </tr>
         </tbody>
       </table>
