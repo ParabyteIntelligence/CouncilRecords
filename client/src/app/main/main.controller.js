@@ -39,10 +39,9 @@ export class MainController {
       if (lodash.isDate(vm.endDate)) {
         query.end_date = vm.endDate;
       }
-      return Search.search(query).then(function (data) {
+      vm.deferred = Search.search(query).then(function (data) {
         vm.results = data.hits;
-        return data.autocomplete;
-      })
+      }).$promise;
     }
 
     function doSearch() {

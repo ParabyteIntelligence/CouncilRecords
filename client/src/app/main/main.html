@@ -9,7 +9,7 @@
 <md-subheader class="md-sticky align-center" layout="row">
   <form class="search-form">
     <div layout="row" layout-align="center center">
-      <md-autocomplete class="md-primary" tabindex="0" flex="50" md-search-text="vm.search" md-items="item in vm.findResults(vm.search)" md-min-length="4" md-item-text="item" placeholder="Search for People, Companies, Keywords">
+      <md-autocomplete class="md-primary" tabindex="0" flex="50" md-search-text="vm.search" md-min-length="4" md-item-text="item" placeholder="Search for People, Companies, Keywords">
         <md-item-template>
           <span md-highlight-text="vm.search">
             {{item}}
