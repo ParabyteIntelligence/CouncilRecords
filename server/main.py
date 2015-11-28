@@ -95,6 +95,10 @@ def main(run_new_crawl=True):
                             "type": "string",
                             "index": "analyzed",
                             "analyzer": "stem"
+                        },
+                        "summary": {
+                            "type": "string",
+                            "index": "not_analyzed",
                         }
                     }
                 }
