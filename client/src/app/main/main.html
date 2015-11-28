@@ -9,7 +9,7 @@
 <md-subheader class="md-sticky align-center" layout="row">
   <form class="search-form">
     <div layout="row" layout-align="center center">
-      <md-autocomplete flex="50" md-search-text="vm.search" md-items="item in vm.findResults(vm.search)" md-min-length="4" md-item-text="item" placeholder="Search for People, Companies, Keywords">
+      <md-autocomplete tabindex="0" flex="50" md-search-text="vm.search" md-items="item in vm.findResults(vm.search)" md-min-length="4" md-item-text="item" placeholder="Search for People, Companies, Keywords">
         <md-item-template>
           <span md-highlight-text="vm.search">
             {{item}}
@@ -23,9 +23,9 @@
         <md-icon>
           <i class="material-icons">attach_money</i>
         </md-icon>
-        <input type="number" step="1" name="rate" max-amount="{{vm.maxAmt}}" ng-model="vm.minAmt" />
+        <input tabindex="1" type="number" step="1" name="rate" max-amount="{{vm.maxAmt}}" ng-model="vm.minAmt" />
       </md-input-container>
-      <md-datepicker flex="20" layout-align="center center" ng-model="vm.startDate" md-placeholder="Start Date"></md-datepicker>
+      <md-datepicker tabindex="3" flex="20" layout-align="center center" ng-model="vm.startDate" md-placeholder="Start Date"></md-datepicker>
     </div>
     <div layout="row" layout-align="center center">
       <md-input-container class="md-icon-left" flex="20">
@@ -33,12 +33,12 @@
         <md-icon>
           <i class="material-icons">attach_money</i>
         </md-icon>
-        <input flex type="number" step="1" name="rate" min-amount="{{vm.minAmt}}" ng-model="vm.maxAmt" />
+        <input tabindex="2" flex type="number" step="1" name="rate" min-amount="{{vm.minAmt}}" ng-model="vm.maxAmt" />
       </md-input-container>
-      <md-datepicker flex="20" ng-model="vm.endDate" md-placeholder="End Date"></md-datepicker>
+      <md-datepicker tabindex="4" flex="20" ng-model="vm.endDate" md-placeholder="End Date"></md-datepicker>
     </div>
     <div layout="row" layout-align="center center">
-      <md-button flex="25" class="md-raised md-primary" ng-click="vm.doSearch()">Search</md-button>
+      <md-button tabindex="5" flex="25" class="md-raised md-primary" ng-click="vm.doSearch()">Search</md-button>
     </div>
   </form>
 </md-subheader>
