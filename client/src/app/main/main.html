@@ -9,7 +9,7 @@
 <md-subheader class="md-sticky align-center" layout="row">
   <form class="search-form">
     <div layout="row" layout-align="center center">
-      <md-autocomplete class="md-primary" tabindex="0" flex="50" flex-sm="75" md-search-text="vm.search" md-items="item in vm.findResults(vm.search)" md-min-length="4" md-item-text="item" placeholder="Search for People, Companies, Keywords">
+      <md-autocomplete class="md-primary" tabindex="0" flex="65" flex-md="75" flex-sm="95" md-search-text="vm.search" md-items="item in vm.findResults(vm.search)" md-min-length="4" md-item-text="item" placeholder="Search for People, Companies, Keywords">
         <md-item-template>
           <span md-highlight-text="vm.search">
             {{item}}
@@ -18,24 +18,26 @@
       </md-autocomplete>
     </div>
     <div layout="row" layout-align="center center">
-      <md-input-container class="md-accent md-icon-left" flex="20" flex-sm="30">
-        <label>Min Amount</label>
-        <md-icon>
-          <i class="material-icons">attach_money</i>
-        </md-icon>
-        <input tabindex="1" type="number" step="1" name="rate" max-amount="{{vm.maxAmt}}" ng-model="vm.minAmt" />
-      </md-input-container>
-      <md-datepicker class="md-accent" tabindex="3" flex="20" flex-sm="30" layout-align="center center" ng-model="vm.startDate" md-placeholder="Start Date"></md-datepicker>
-    </div>
-    <div layout="row" layout-align="center center">
-      <md-input-container class="md-accent md-icon-left" flex="20" flex-sm="30">
-        <label>Max Amount</label>
-        <md-icon>
-          <i class="material-icons">attach_money</i>
-        </md-icon>
-        <input tabindex="2" flex type="number" step="1" name="rate" min-amount="{{vm.minAmt}}" ng-model="vm.maxAmt" />
-      </md-input-container>
-      <md-datepicker class="md-accent" tabindex="4" flex="20" flex-sm="30" ng-model="vm.endDate" md-placeholder="End Date"></md-datepicker>
+      <div layout="column" layout-align="center center" layout-wrap flex="20" flex-md="30" flex-sm="40">
+        <md-input-container class="md-accent md-icon-left">
+          <label>Min Amount</label>
+          <md-icon>
+            <i class="material-icons">attach_money</i>
+          </md-icon>
+          <input tabindex="1" type="number" step="1" name="rate" max-amount="{{vm.maxAmt}}" ng-model="vm.minAmt" />
+        </md-input-container>
+        <md-input-container class="md-accent md-icon-left">
+          <label>Max Amount</label>
+          <md-icon>
+            <i class="material-icons">attach_money</i>
+          </md-icon>
+          <input tabindex="2" flex type="number" step="1" name="rate" min-amount="{{vm.minAmt}}" ng-model="vm.maxAmt" />
+        </md-input-container>
+      </div>
+      <div layout="column" layout-align="center center" flex="20" flex-md="30" flex-sm="50">
+        <md-datepicker class="md-accent" tabindex="3" ng-model="vm.startDate" md-placeholder="Start Date"></md-datepicker>
+        <md-datepicker class="md-accent" tabindex="4" ng-model="vm.endDate" md-placeholder="End Date"></md-datepicker>
+      </div>
     </div>
     <div layout="row" layout-align="center center">
       <md-button tabindex="5" flex="25" flex-sm="40" class="md-raised md-primary" ng-click="vm.doSearch()">Search</md-button>
@@ -44,7 +46,7 @@
 </md-subheader>
 <md-content layout-fill layout-align="center start" layout="row" ng-if="vm.results.length > 0">
   <!-- <md-content layout-fill layout-align="center start" layout="row"> -->
-  <div flex="80" flex-sm="95">
+  <div flex="75" flex-md="85" flex-sm="95">
 
     <md-data-table-toolbar>
       <h2 class="md-title">Results</h2>
@@ -56,12 +58,12 @@
         </thead>
         <tbody>
           <tr md-auto-select ng-repeat="result in vm.results | limitTo: vm.limit: (vm.page - 1) * vm.limit" layout="row" style="height: 90px;">
-            <td flex="70" style="overflow:hidden;">
+            <td flex="70" flex-md="70" flex-sm="100" style="overflow:hidden;">
               <h4><a href="{{::result._source.url}}" target="_blank">{{::result._source.title}}</a></h4>
               <p>{{::result._source.summary}}</p>
             </td>
-            <td flex="15">{{::result._source.amount | currency}}</td>
-            <td flex="15">{{::result._source.authorization_date | date}}</td>
+            <td flex="15" flex-md="30" flex-sm="0">{{::result._source.amount | currency}}</td>
+            <td flex="15" flex-md="0" flex-sm="0">{{::result._source.authorization_date | date}}</td>
           </tr>
         </tbody>
       </table>
