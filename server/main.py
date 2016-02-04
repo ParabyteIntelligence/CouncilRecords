@@ -85,7 +85,7 @@ def main(run_new_crawl=True):
                         },
                         "authorization_date":  {
                             "type": "date",
-                            "format": "strict_date_optional_time"
+                            "format": "date_optional_time"
                         },
                         "amount": {
                             "type": "double",
